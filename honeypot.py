@@ -6,8 +6,8 @@ import traceback
 import paramiko
 import threading
 from python_settings import settings
-from binascii import hexlify
-from paramiko.py3compat import u
+# from binascii import hexlify
+# from paramiko.py3compat import u
 
 HOST_KEY = paramiko.RSAKey(filename='server.key')
 SSH_BANNER = "SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.1"
@@ -44,10 +44,10 @@ class BasicSshHoneypot(paramiko.ServerInterface):
         return "publickey,password"
 
     def check_auth_publickey(self, username, key):
-        fingerprint = u(hexlify(key.get_fingerprint()))
+        # fingerprint = u(hexlify(key.get_fingerprint()))
         logging.info(
-            'client public key ({}): username: {}, key name: {}, md5 fingerprint: {}, base64: {}, bits: {}'.format(
-                self.client_ip, username, key.get_name(), fingerprint, key.get_base64(), key.get_bits()))
+            'client public key ({}): username: {}, key name: {}, base64: {}, bits: {}'.format(
+                self.client_ip, username, key.get_name(), key.get_base64(), key.get_bits()))
         return paramiko.AUTH_PARTIALLY_SUCCESSFUL
 
     def check_auth_password(self, username, password):
